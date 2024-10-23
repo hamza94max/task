@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.bumptech.glide.Glide
+import com.hamza.task.R
 import com.hamza.task.databinding.PlayerMainCardBinding
 import com.hamza.task.domain.models.Player
 import com.hamza.task.utils.Ext.toReadableFormat
@@ -32,24 +33,23 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
                         .load(nationality.flagUrl)
                         .into(nationalityImageView)
 
-                    val imageLoader = ImageLoader(itemView.context)
-                    val request = ImageRequest.Builder(itemView.context)
-                        .data(team.logoUrl)
-                        .target(teamImageView)
-                        .build()
-
-                    imageLoader.enqueue(request)
+                    Glide
+                        .with(itemView.context)
+                        .load(team.logoUrl)
+                        .placeholder(R.drawable.team_ex)
+                        .into(teamImageView)
 
 
                     Glide
                         .with(itemView.context)
                         .load(league.logoUrl)
+                        .placeholder(R.drawable.league_ex)
                         .into(leagueImageView)
 
-                   playerName.text = name
-                   playerNumber.text = "#$jerseyNumber"
-                   playerPosition.text = position.position
-                   nationalityTextView.text = nationality.name
+                   playerNameTextVIew.text = name
+                   playerNumberTextView.text = "#$jerseyNumber"
+                   playerPositionTextView.text = position.position
+                   nationalityTextVIew.text = nationality.name
                 }
 
                 binding.playerCard2.apply {

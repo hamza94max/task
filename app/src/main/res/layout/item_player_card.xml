@@ -1,135 +1,132 @@
-<!-- Main Card Layout: res/layout/item_player_card.xml -->
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="@android:color/transparent"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="8dp">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/card_background"
-        android:padding="8dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/player_card"
+        android:layout_width="165dp"
+        android:layout_height="190dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:padding="@dimen/_2sdp">
 
-        <ImageView
-            android:id="@+id/leagueImageView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/league_ex" />
-
-        <ImageView
-            android:id="@+id/teamImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/team_background"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/team_ex" />
 
         <ImageView
             android:id="@+id/playerImageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/player"
-            android:contentDescription="player image" />
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/player_img_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/player" />
 
-
-        <TextView
-            android:id="@+id/playerNumber"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_below="@id/playerImageView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/circle_background"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="30"
-            android:fontFamily="@font/madani_regular"
-            android:textColor="@color/orange"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText" />
-
-        <LinearLayout
-            android:id="@+id/nationalityRatingLayout"
+        <ImageView
+            android:id="@+id/teamImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/playerNumber"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/team_background"
+            android:src="@drawable/team_ex"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/leagueImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/_6sdp"
+            android:src="@drawable/league_ex"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/player_item_bg" />
+
+        <TextView
+            android:id="@+id/playerNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/player_sore_bg"
+            android:fontFamily="@font/madani_regular"
+            android:padding="2dp"
+            android:textColor="@color/yellow"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@id/playerImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="#7" />
+
+        <LinearLayout
+            android:id="@+id/nationalityLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/playerNumberTextView">
 
             <ImageView
                 android:id="@+id/nationalityImageView"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginHorizontal="@dimen/_1sdp"
-                android:src="@drawable/team_ex"
-                tools:ignore="ContentDescription" />
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/team_ex" />
 
             <TextView
-                android:id="@+id/nationalityTextView"
+                android:id="@+id/nationalityTextVIew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:text="Italy"
+                android:layout_marginHorizontal="@dimen/_1sdp"
                 android:fontFamily="@font/madani_regular"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="13sp"
-                tools:ignore="HardcodedText" />
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                tools:text="Algeria" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/playerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_below="@id/nationalityRatingLayout"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/madani_regular"
-            android:text="Moustapha Zeghba"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/playerPosition"
+            android:id="@+id/playerNameTextVIew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/playerName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:text="Goalkeeper"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
             android:fontFamily="@font/madani_regular"
-            tools:ignore="HardcodedText" />
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nationalityLinearLayout"
+            tools:text="Salah" />
+
+        <TextView
+            android:id="@+id/playerPositionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madani_regular"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/playerNameTextVIew"
+            tools:text="Winger" />
 
         <ImageView
             android:id="@+id/fanzLogoImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/playerName"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_6sdp"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
