@@ -1,3 +1,5 @@
+import javax.print.DocFlavor.URL
+
 pluginManagement {
     repositories {
         google {

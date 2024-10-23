@@ -55,9 +55,16 @@ dependencies {
     implementation ("com.intuit.sdp:sdp-android:1.1.1")
 
 
+    // glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    //Coil (https://github.com/coil-kt/coil)
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-svg:2.5.0")
 
     // firebase
     implementation(libs.firebase.bom)
+    implementation(libs.firebase.database.ktx)
 
     // navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -66,6 +73,7 @@ dependencies {
 
     // hilt
     implementation ("com.google.dagger:hilt-android:2.48.1")
+
     kapt ("com.google.dagger:hilt-android-compiler:2.48.1")
 
 
