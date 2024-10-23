@@ -14,14 +14,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val playersViewModel: PlayersViewModel by viewModels()
 
     private val playersAdapter by lazy { PlayersAdapter() }
+    private lateinit var filtersAdapter: FiltersAdapter
 
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
     override fun prepareView(savedInstanceState: Bundle?) {
 
+        val filters = arrayListOf("All")
         playersViewModel.players.observe(this) { players ->
-
+            filters.addAll(players.map {
+                it.team.name
+            })
+            filtersAdapter = FiltersAdapter() {
+//                if (it == 0){
+//                    playersAdapter.differ.submitList(players)
+//                } else {
+//                    playersAdapter.differ.submitList(players.filter {
+//                        it.team.name == filters[it]
+//            }
+            }
+            binding.filtersRecyclerView.adapter = filtersAdapter
+            filtersAdapter.differ.submitList(filters.distinct())
 
             binding.playersRecyclerView.adapter = playersAdapter
             playersAdapter.differ.submitList(players)

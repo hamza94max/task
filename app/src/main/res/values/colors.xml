@@ -2,8 +2,10 @@
 <resources>
     <color name="app_color">#FF6200EE</color>
     <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="background_color">#2C1349</color>2C1349
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FFB700</color>
+    <color name="text_color">#917EA7</color>
+    <color name="yellow">#FFB700</color>
 </resources>
