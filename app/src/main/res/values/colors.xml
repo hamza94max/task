@@ -8,5 +8,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FFB700</color>
     <color name="text_color">#917EA7</color>
+    <color name="text_color_light">#BFB6EB</color>
     <color name="yellow">#FFB700</color>
 </resources>

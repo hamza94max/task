@@ -11,7 +11,7 @@ data class Player(
     val marketValue: Double = 0.0,
     val team: Team = Team("",""),
     val league: League = League("",""),
-    val selected: Boolean = false
+    var selected: Boolean = false
 )
 
 enum class Position(val position: String){
