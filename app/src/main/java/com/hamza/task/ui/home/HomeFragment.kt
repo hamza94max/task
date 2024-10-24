@@ -1,20 +1,29 @@
 package com.hamza.task.ui.home
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.hamza.task.R
 import com.hamza.task.base.BaseFragment
 import com.hamza.task.databinding.FragmentHomeBinding
 import com.hamza.task.domain.models.Player
 import com.hamza.task.domain.models.Position
-import com.hamza.task.ui.home.SelectedPlayersAdapter.Companion
+import com.hamza.task.utils.Constants.INIT_AVAILABLE_BUDGET
+import com.hamza.task.utils.Constants.PLAYERS_NUM
+import com.hamza.task.utils.Ext.toReadableFormat
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.format.TextStyle
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSelectedPlayerListener {
 
     private val playersViewModel: PlayersViewModel by viewModels()
 
@@ -24,7 +33,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
     private var playersList = mutableListOf<Player>()
 
     private var selectedPlayers = mutableListOf<Player>()
-    private val selectedPlayersAdapter by lazy { SelectedPlayersAdapter() }
+    private var selectedPlayersAdapter = SelectedPlayersAdapter(this)
 
 
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
@@ -61,6 +70,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
 
         initSelectedPlayersList()
 
+        updateBudget("0")
+        updatePlayersNum(0)
 
     }
 
@@ -78,14 +89,63 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
     private fun filterByPosition(position: Position) {
         val filteredPlayers = playersList.filter { it.position == position }
         playersAdapter.differ.submitList(filteredPlayers)
+        playersAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateBudget(budget: String) {
+        val staticValue = INIT_AVAILABLE_BUDGET.toDouble().toReadableFormat()
+        val fullText = "$budget / $staticValue"
+
+        val spannable = SpannableString(fullText)
+
+        spannable.setSpan(AbsoluteSizeSpan(16, true), 0, budget.length, 0)
+        spannable.setSpan(
+            ForegroundColorSpan(resources.getColor(R.color.yellow)),
+            0,
+            budget.length,
+            0
+        )
+
+        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValue.length, fullText.length, 0)
+        spannable.setSpan(ForegroundColorSpan(Color.WHITE), staticValue.length, fullText.length, 0)
+
+        binding.budgetTextView.text = spannable
+
+    }
+
+
+    private fun updatePlayersNum(playersNum: Int) {
+        val dynamicValue = playersNum.toString()
+        val staticValue = "$PLAYERS_NUM"
+        val fullText = "$dynamicValue / $staticValue"
+
+        val spannable = SpannableString(fullText)
+
+        spannable.setSpan(AbsoluteSizeSpan(16, true), 0, dynamicValue.length, 0)
+        spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.yellow)), 0, dynamicValue.length, 0)
+
+        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValue.length, fullText.length, 0)
+        spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.text_color)), staticValue.length, fullText.length, 0)
+
+        binding.playersNumTextView.text = spannable
+
     }
 
 
     override fun onPlayerSelected(player: Player) {
         if (activePosition < 15) {
             selectedPlayers[activePosition] = player
+
             activePosition++
             currentPosition++
+
+            currentBudget += player.marketValue
+            updateBudget(currentBudget.toReadableFormat())
+
+            updatePlayersNum(currentPosition)
+
+            playersList.find { it.name == player.name }!!.selected = true
+            Log.d("hamzaPlayerss", "selected Players from array: ${playersList.filter { it.selected }.size}")
 
             selectedPlayersAdapter.differ.submitList(selectedPlayers.toList())
             selectedPlayersAdapter.notifyDataSetChanged()
@@ -94,6 +154,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
                 filterByPosition(selectedPlayers[currentPosition].position)
             }
 
+
+
+        } else {
+            showLongToast("You reached to the limit of the squad")
         }
 
 
@@ -107,6 +171,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
 
         var activePosition = 0
 
+        var currentBudget = 0.0
+
+        var itemClickedPosition = -1
+        var isClicked = false
+
+
+    }
+
+    override fun onSelectedPlayerClicked(position: Int) {
+        itemClickedPosition = position
+        isClicked = true
+        selectedPlayersAdapter.notifyDataSetChanged()
 
     }
 

@@ -62,6 +62,11 @@ class PlayersAdapter (
                 binding.playerCard2.apply {
                     playerRating.text = rating.toString()
                     playerMarketValue.text = marketValue.toReadableFormat()
+
+                    if (selected) {
+                        playerMarketValue.setBackgroundResource(R.drawable.price_blue_background)
+                        playerMarketValue.setTextColor(itemView.context.getColor(R.color.green))
+                    }
                 }
             }
         }

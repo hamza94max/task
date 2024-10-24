@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +14,14 @@ import com.hamza.task.domain.models.Player
 import com.hamza.task.databinding.SelectedItemPlayerCardBinding
 import com.hamza.task.databinding.ActiveSelectedItemBinding
 import com.hamza.task.databinding.NonActiveSelectedItemBinding
+import com.hamza.task.ui.home.HomeFragment.Companion.activePosition
+import com.hamza.task.ui.home.HomeFragment.Companion.isClicked
+import com.hamza.task.ui.home.HomeFragment.Companion.itemClickedPosition
 import com.hamza.task.utils.Ext.toReadableFormat
 
-class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SelectedPlayersAdapter(
+    val onSelectedPlayerListener: OnSelectedPlayerListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // View types
     companion object {
@@ -23,7 +29,6 @@ class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val VIEW_TYPE_ACTIVE = 2
         const val VIEW_TYPE_NON_ACTIVE = 3
 
-        var activePosition: Int = 0
     }
 
     inner class PlayerViewHolder(val binding: SelectedItemPlayerCardBinding) :
@@ -56,10 +61,27 @@ class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     playerNumberTextView.text = "#$jerseyNumber"
                     playerPositionTextView.text = position.position
                     playerPositionCardTextView.text = position.position
+                    playerMarketValue.text = marketValue.toReadableFormat()
+
+                    if (isClicked) {
+                        overlay.isVisible = itemClickedPosition != adapterPosition
+                        closeImageView.isVisible = itemClickedPosition == adapterPosition
+                    }
+                    binding.closeImageView.setOnClickListener {
+                        Log.i("hamzaSS", "close image")
+                    }
+
                 }
             }
 
+        }
 
+        init {
+            itemView.setOnClickListener {
+                onSelectedPlayerListener.onSelectedPlayerClicked(adapterPosition)
+
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -68,7 +90,12 @@ class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bindActive(currentItem: Player) {
             binding.playerPositionTextView.text = currentItem.position.position
-            binding.playerPositionTextView.setTextColor(ContextCompat.getColor(itemView.context, R.color.yellow))
+            binding.playerPositionTextView.setTextColor(
+                ContextCompat.getColor(
+                    itemView.context,
+                    R.color.yellow
+                )
+            )
         }
     }
 
