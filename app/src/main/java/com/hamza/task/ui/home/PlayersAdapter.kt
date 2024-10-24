@@ -3,6 +3,7 @@ package com.hamza.task.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +54,9 @@ class PlayersAdapter (
                    playerNumberTextView.text = "#$jerseyNumber"
                    playerPositionTextView.text = position.position
                    nationalityTextVIew.text = nationality.name
+
+                   selectedTextView.isVisible = selected
+                   selectedOverlay.isVisible = selected
                 }
 
                 binding.playerCard2.apply {
@@ -64,6 +68,7 @@ class PlayersAdapter (
 
         init {
             itemView.setOnClickListener{
+                itemView.elevation = 12f
                 differ.currentList[adapterPosition].selected = true
                 onPlayerSelected.onPlayerSelected(differ.currentList[adapterPosition])
             }

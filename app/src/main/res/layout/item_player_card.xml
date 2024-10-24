@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Main card layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/player_card"
         android:layout_width="165dp"
@@ -13,7 +14,7 @@
         android:layout_marginTop="4dp"
         android:padding="@dimen/_2sdp">
 
-
+        <!-- Player image -->
         <ImageView
             android:id="@+id/playerImageView"
             android:layout_width="match_parent"
@@ -24,6 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/player" />
 
+        <!-- Team icon -->
         <ImageView
             android:id="@+id/teamImageView"
             android:layout_width="wrap_content"
@@ -33,7 +35,7 @@
             android:src="@drawable/team_ex"
             app:layout_constraintEnd_toEndOf="parent" />
 
-
+        <!-- League icon -->
         <ImageView
             android:id="@+id/leagueImageView"
             android:layout_width="30dp"
@@ -42,12 +44,14 @@
             android:src="@drawable/league_ex"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Main background of player card -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/player_item_bg" />
 
+        <!-- Player number -->
         <TextView
             android:id="@+id/playerNumberTextView"
             android:layout_width="wrap_content"
@@ -62,6 +66,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="#7" />
 
+        <!-- Nationality info -->
         <LinearLayout
             android:id="@+id/nationalityLinearLayout"
             android:layout_width="match_parent"
@@ -90,7 +95,7 @@
 
         </LinearLayout>
 
-
+        <!-- Player name -->
         <TextView
             android:id="@+id/playerNameTextVIew"
             android:layout_width="wrap_content"
@@ -105,6 +110,7 @@
             app:layout_constraintTop_toBottomOf="@id/nationalityLinearLayout"
             tools:text="Salah" />
 
+        <!-- Player position -->
         <TextView
             android:id="@+id/playerPositionTextView"
             android:layout_width="wrap_content"
@@ -117,6 +123,7 @@
             app:layout_constraintTop_toBottomOf="@id/playerNameTextVIew"
             tools:text="Winger" />
 
+        <!-- FanZ logo -->
         <ImageView
             android:id="@+id/fanzLogoImageView"
             android:layout_width="wrap_content"
@@ -126,6 +133,35 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Add new background overlay for 'selected' state -->
+        <View
+            android:id="@+id/selectedOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/overlay_color"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Selected label -->
+        <TextView
+            android:id="@+id/selectedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selected_background"
+            android:fontFamily="@font/madani_regular"
+            android:padding="4dp"
+            android:text="SELECTED"
+            android:gravity="center"
+            android:textColor="@color/yellow"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/playerImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
