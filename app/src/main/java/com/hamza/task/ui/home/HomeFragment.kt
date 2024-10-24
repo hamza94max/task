@@ -1,8 +1,10 @@
 package com.hamza.task.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.hamza.task.base.BaseFragment
 import com.hamza.task.databinding.FragmentHomeBinding
@@ -37,8 +39,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             binding.filtersRecyclerView.adapter = filtersAdapter
             filtersAdapter.differ.submitList(filters.distinct())
 
+            Log.d("hamzaDATA", "$players")
             binding.playersRecyclerView.adapter = playersAdapter
             playersAdapter.differ.submitList(players)
+            binding.loadingProgressBar.isVisible = false
         }
 
         playersViewModel.error.observe(this) {

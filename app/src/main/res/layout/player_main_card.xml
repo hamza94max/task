@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+    <!-- Main Player Card -->
+    <include
+        android:id="@+id/playerCard1"
+        layout="@layout/item_player_card" />
+
+    <!-- Bottom Section with Rating, Price, and Info Icon -->
+    <include
+        android:id="@+id/playerCard2"
+        layout="@layout/item_bottom_section" />
+
+
+</LinearLayout>

@@ -33,10 +33,11 @@ class PlayersViewModel @Inject constructor(
     private fun fetchPlayers() {
         viewModelScope.launch {
             try {
+                Log.i("hamzaDATA", "fetchPlayers()")
                 val playersList = playersRepo.getPlayers()
                 _players.value = playersList
             } catch (e: Exception) {
-                Log.e("hamzaError", e.message.toString())
+                Log.e("hamzaDATAError", e.message.toString())
                 _error.value = e.message
             }
         }

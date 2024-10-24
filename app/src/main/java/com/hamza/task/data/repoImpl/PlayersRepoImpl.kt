@@ -1,5 +1,7 @@
 package com.hamza.task.data.repoImpl
 
+import android.util.Log
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -15,21 +17,27 @@ class PlayersRepoImpl : PlayersRepo {
 
     private val database = FirebaseDatabase.getInstance().getReference(PLAYERS_PATH)
 
-
     override suspend fun getPlayers(): List<Player> = suspendCancellableCoroutine { continuation ->
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                 val players = mutableListOf<Player>()
-                for (playerSnapshot in snapshot.children) {
+                for (playerSnapshot in dataSnapshot.children) {
                     val player = playerSnapshot.getValue(Player::class.java)
                     player?.let { players.add(it) }
                 }
                 continuation.resume(players)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                continuation.resumeWithException(error.toException())
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("getPlayers", "loadPlayers:onCancelled", databaseError.toException())
+                continuation.resumeWithException(databaseError.toException())
             }
-        })
+        }
+
+        database.addValueEventListener(postListener)
     }
+
+
 }
