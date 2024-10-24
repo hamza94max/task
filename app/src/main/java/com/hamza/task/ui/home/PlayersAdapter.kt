@@ -12,9 +12,12 @@ import com.bumptech.glide.Glide
 import com.hamza.task.R
 import com.hamza.task.databinding.PlayerMainCardBinding
 import com.hamza.task.domain.models.Player
+import com.hamza.task.ui.home.HomeFragment.Companion.currentPosition
 import com.hamza.task.utils.Ext.toReadableFormat
 
-class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
+class PlayersAdapter (
+    val onPlayerSelected: OnPlayerSelected
+) : RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: PlayerMainCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -60,7 +63,10 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.ViewHolder>() {
         }
 
         init {
-
+            itemView.setOnClickListener{
+                differ.currentList[adapterPosition].selected = true
+                onPlayerSelected.onPlayerSelected(differ.currentList[adapterPosition])
+            }
         }
 
     }

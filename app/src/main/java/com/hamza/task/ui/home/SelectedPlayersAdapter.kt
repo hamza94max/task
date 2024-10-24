@@ -1,5 +1,6 @@
 package com.hamza.task.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -54,6 +55,7 @@ class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     playerNameTextVIew.text = name
                     playerNumberTextView.text = "#$jerseyNumber"
                     playerPositionTextView.text = position.position
+                    playerPositionCardTextView.text = position.position
                 }
             }
 
@@ -81,7 +83,7 @@ class SelectedPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<Player>() {
         override fun areItemsTheSame(oldItem: Player, newItem: Player): Boolean {
-            return oldItem.rating == newItem.rating
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Player, newItem: Player): Boolean {

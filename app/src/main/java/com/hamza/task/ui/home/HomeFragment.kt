@@ -8,15 +8,24 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.hamza.task.base.BaseFragment
 import com.hamza.task.databinding.FragmentHomeBinding
+import com.hamza.task.domain.models.Player
+import com.hamza.task.domain.models.Position
+import com.hamza.task.ui.home.SelectedPlayersAdapter.Companion
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected {
 
     private val playersViewModel: PlayersViewModel by viewModels()
 
-    private val playersAdapter by lazy { PlayersAdapter() }
+    private val playersAdapter by lazy { PlayersAdapter(this) }
     private lateinit var filtersAdapter: FiltersAdapter
+
+    private var playersList = mutableListOf<Player>()
+
+    private var selectedPlayers = mutableListOf<Player>()
+    private val selectedPlayersAdapter by lazy { SelectedPlayersAdapter() }
+
 
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
@@ -41,13 +50,62 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
             Log.d("hamzaDATA", "$players")
             binding.playersRecyclerView.adapter = playersAdapter
-            playersAdapter.differ.submitList(players)
+            playersList = players.toMutableList()
+            filterByPosition(selectedPlayers[currentPosition].position)
             binding.loadingProgressBar.isVisible = false
         }
 
         playersViewModel.error.observe(this) {
             showLongToast(it)
         }
+
+        initSelectedPlayersList()
+
+
+    }
+
+    private fun initSelectedPlayersList() {
+        repeat(2) { selectedPlayers.add(Player(position = Position.GOALKEEPER)) }
+        repeat(5) { selectedPlayers.add(Player(position = Position.DEFENDER)) }
+        repeat(5) { selectedPlayers.add(Player(position = Position.MIDFIELDER)) }
+        repeat(3) { selectedPlayers.add(Player(position = Position.FORWARD)) }
+
+        binding.selectedPlayersRecyclerView.adapter = selectedPlayersAdapter
+        selectedPlayersAdapter.differ.submitList(selectedPlayers)
+    }
+
+
+    private fun filterByPosition(position: Position) {
+        val filteredPlayers = playersList.filter { it.position == position }
+        playersAdapter.differ.submitList(filteredPlayers)
+    }
+
+
+    override fun onPlayerSelected(player: Player) {
+        if (activePosition < 15) {
+            selectedPlayers[activePosition] = player
+            activePosition++
+            currentPosition++
+
+            selectedPlayersAdapter.differ.submitList(selectedPlayers.toList())
+            selectedPlayersAdapter.notifyDataSetChanged()
+
+            if (currentPosition != 15){
+                filterByPosition(selectedPlayers[currentPosition].position)
+            }
+
+        }
+
+
+    }
+
+    companion object {
+
+        var currentPosition = 0
+        var selectedPosition = 0
+
+
+        var activePosition = 0
 
 
     }

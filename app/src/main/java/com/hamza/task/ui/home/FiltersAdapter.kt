@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hamza.task.R
 import com.hamza.task.databinding.FilterItemBinding
+import com.hamza.task.ui.home.HomeFragment.Companion.selectedPosition
 
 class FiltersAdapter (
     private val onFilterSelected: (Int) -> Unit
 ): RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
-
-    private var selectedPosition = -1
 
     inner class ViewHolder(val binding: FilterItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
