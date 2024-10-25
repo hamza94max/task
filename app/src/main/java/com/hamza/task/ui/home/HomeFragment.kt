@@ -2,6 +2,7 @@ package com.hamza.task.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
@@ -66,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         updateBudget("0")
         updatePlayersNum()
 
-        binding.homeFragment.setOnClickListener{
+        binding.bottomLinearLayout.setOnClickListener{
             isClicked = false
             itemClickedPosition = -1
             selectedPlayersAdapter.notifyDataSetChanged()
@@ -98,20 +99,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
         val spannable = SpannableString(fullText)
 
-        spannable.setSpan(AbsoluteSizeSpan(16, true), 0, budget.length, 0)
+        // Span for the budget (dynamic part)
+        val budgetStart = 0
+        val budgetEnd = budget.length
+        spannable.setSpan(AbsoluteSizeSpan(16, true), budgetStart, budgetEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(
             ForegroundColorSpan(resources.getColor(R.color.yellow)),
-            0,
-            budget.length,
-            0
+            budgetStart,
+            budgetEnd,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValue.length, fullText.length, 0)
-        spannable.setSpan(ForegroundColorSpan(Color.WHITE), staticValue.length, fullText.length, 0)
+        // Span for the static value (static part)
+        val staticValueStart = budgetEnd + 3 // Adjust for " / " (2 characters + 1 for 0-based index)
+        val staticValueEnd = fullText.length
+        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValueStart, staticValueEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(ForegroundColorSpan(Color.WHITE), staticValueStart, staticValueEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.budgetTextView.text = spannable
-
     }
+
 
 
     private fun updatePlayersNum() {
