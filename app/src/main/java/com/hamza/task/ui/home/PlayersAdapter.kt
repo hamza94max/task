@@ -75,7 +75,7 @@ class PlayersAdapter (
         init {
             itemView.setOnClickListener{
                 itemView.elevation = 12f
-                differ.currentList[adapterPosition].selected = true
+                if (adapterPosition != -1)
                 onPlayerSelected.onPlayerSelected(differ.currentList[adapterPosition])
             }
         }

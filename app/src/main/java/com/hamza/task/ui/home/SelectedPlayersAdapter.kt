@@ -78,15 +78,16 @@ class SelectedPlayersAdapter(
                 }
             }
 
-        }
-
-        init {
             itemView.setOnClickListener {
-                onSelectedPlayerListener.onSelectedPlayerClicked(adapterPosition)
-
-                notifyDataSetChanged()
+                if (differ.currentList[adapterPosition].name.isNotBlank()){
+                    onSelectedPlayerListener.onSelectedPlayerClicked(adapterPosition)
+                    notifyDataSetChanged()
+                }
             }
+
         }
+
+
     }
 
     inner class ActiveViewHolder(val binding: ActiveSelectedItemBinding) :
@@ -182,7 +183,7 @@ class SelectedPlayersAdapter(
             holder.itemView.setOnClickListener {
                 if (position == activePosition) {
                     // Add player to this slot
-                    currentItem.selected = true
+                    //currentItem.selected = true
                     // Move active to the next slot
                     activePosition = findNextAvailableSlot()
                     notifyDataSetChanged() // Update the RecyclerView
@@ -193,7 +194,7 @@ class SelectedPlayersAdapter(
 
     // Find next available slot (first unselected item)
     fun findNextAvailableSlot(): Int {
-        return differ.currentList.indexOfFirst { !it.selected }
+        return differ.currentList.indexOfFirst { it.name.isBlank() }
     }
 
     override fun getItemCount(): Int {

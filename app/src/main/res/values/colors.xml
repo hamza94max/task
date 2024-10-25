@@ -14,6 +14,6 @@
 
     <color name="dark_background">#B3000000</color> <!-- A semi-transparent black -->
     <color name="default_background">#FFFFFF</color> <!-- Default white background -->
-
+    <color name="yellow_darker">#996D00</color>
 
 </resources>
