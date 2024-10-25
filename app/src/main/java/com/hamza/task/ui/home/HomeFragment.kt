@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
     private var playersList = mutableListOf<Player>()
 
-    private var selectedPlayers = mutableListOf<Player>()
+    private var selectedPlayers: MutableList<Player> = mutableListOf()
     private var selectedPlayersAdapter = SelectedPlayersAdapter(this)
 
 
@@ -115,6 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
 
     private fun updatePlayersNum() {
+        if (playersNum == 15) updateAutofillText(true) else updateAutofillText(false)
         val dynamicValue = playersNum.toString()
         val staticValue = "$PLAYERS_NUM"
         val fullText = "$dynamicValue / $staticValue"
@@ -133,11 +134,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
 
     override fun onPlayerSelected(player: Player) {
+        Log.d("hamzaHOME", "onPlayerSelected()")
         try{
             if (activePosition < 15) {
                 selectedPlayers[activePosition] = player
+                binding.selectedPlayersRecyclerView.smoothScrollToPosition(activePosition)
 
-                activePosition = selectedPlayers.indexOfFirst { !it.selected  }
+                activePosition = selectedPlayers.indexOfFirst { it.name.isBlank()  }
                 currentPosition++
 
                 currentBudget += player.marketValue
@@ -171,6 +174,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
     }
 
+    private fun updateAutofillText(isDark: Boolean) {
+        if (isDark)
+        binding.autofillTextView.setBackgroundResource(R.drawable.autofills_button_background_dark)
+        else binding.autofillTextView.setBackgroundResource(R.drawable.autofills_button_background)
+    }
+
     companion object {
 
         var currentPosition = 0
@@ -189,6 +198,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
     }
 
     override fun onSelectedPlayerClicked(position: Int) {
+        Log.i("hamzaHOME", "onSelectedPlayerClicked()")
         itemClickedPosition = position
         isClicked = true
         filterByPosition(selectedPlayers[position].position)
@@ -197,6 +207,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
     }
 
     override fun onDeletedPlayerClicked(index: Int, player: Player) {
+        Log.d("hamzaHOME", "onDeletedPlayerClicked()")
         playersList.find { it.name == player.name }!!.selected = false
         selectedPlayers[index] = Player(position = player.position)
 

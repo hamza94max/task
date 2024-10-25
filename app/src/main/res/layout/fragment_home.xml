@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/homeFragment"
     android:background="@color/background_color"
     tools:context=".ui.home.HomeFragment">
 
@@ -67,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
+        android:clipToOutline="true"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/draftTextView"
@@ -79,6 +81,7 @@
         android:layout_height="@dimen/_2sdp"
         android:layout_margin="@dimen/_10sdp"
         android:background="#24973EFF"
+        android:clipToOutline="true"
         app:layout_constraintTop_toBottomOf="@+id/filtersRecyclerView" />
 
 
@@ -91,6 +94,7 @@
         android:background="@drawable/search_view_background"
         android:drawableStart="@drawable/baseline_search_24"
         android:drawablePadding="@dimen/_2sdp"
+        android:clipToOutline="true"
         android:fontFamily="@font/madani_regular"
         android:hint="@string/search_hint"
         android:imeOptions="actionSearch"
@@ -140,17 +144,29 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
         android:orientation="vertical"
         android:background="@drawable/bottom_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/autofillTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Autofill"
+            android:fontFamily="@font/madani_regular"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:textColor="@color/background_color"
+            android:background="@drawable/autofills_button_background"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/selectedPlayersRecyclerView"
@@ -158,6 +174,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/non_active_selected_item"
             android:layout_marginTop="@dimen/_72sdp"/>
 
@@ -165,11 +182,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/selectedPlayersRecyclerView"
             android:orientation="horizontal"
             android:gravity="center"
             android:padding="@dimen/_6sdp"
             android:layout_marginVertical="@dimen/_10sdp">
-
 
             <TextView
                 android:layout_width="0dp"
@@ -201,7 +218,7 @@
 
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
