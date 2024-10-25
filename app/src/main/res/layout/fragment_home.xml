@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/homeFragment"
     android:background="@color/background_color"
     tools:context=".ui.home.HomeFragment">
 
@@ -14,37 +14,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_6sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/budgetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:fontFamily="@font/madani_regular"
-            android:textColor="@color/white"
-            android:padding="@dimen/_4sdp"
-            android:gravity="center"
-            android:textSize="12sp"
+            android:background="@drawable/button_background_light_small"
             android:drawableStart="@drawable/currency"
             android:drawablePadding="@dimen/_2sdp"
-            android:background="@drawable/button_background_light_small"
-            android:text="2M /100M"/>
+            android:fontFamily="@font/madani_regular"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="2M /100M"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/playersNumTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/madani_regular"
-            android:textColor="@color/white"
-            android:padding="@dimen/_4sdp"
-            android:gravity="center"
-            android:textSize="12sp"
+            android:background="@drawable/button_background_small"
             android:drawableStart="@drawable/foot"
             android:drawablePadding="@dimen/_2sdp"
-            android:background="@drawable/button_background_small"
-            android:text="0 /15"/>
+            android:fontFamily="@font/madani_regular"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="0 /15"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
 
     </LinearLayout>
@@ -62,96 +62,116 @@
         android:textSize="22sp"
         app:layout_constraintTop_toBottomOf="@+id/currencyLayout" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/filtersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:clipToOutline="true"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/draftTextView"
-        tools:listitem="@layout/filter_item" />
-
-
-    <View
-        android:id="@+id/lineView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_2sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="#24973EFF"
-        android:clipToOutline="true"
-        app:layout_constraintTop_toBottomOf="@+id/filtersRecyclerView" />
-
-
-    <EditText
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_24sdp"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:background="@drawable/search_view_background"
-        android:drawableStart="@drawable/baseline_search_24"
-        android:drawablePadding="@dimen/_2sdp"
-        android:clipToOutline="true"
-        android:fontFamily="@font/madani_regular"
-        android:hint="@string/search_hint"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:lines="1"
-        android:padding="@dimen/_8sdp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/text_color"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/lineView" />
-
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/upNestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_150sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_200sdp"
+        app:layout_constraintTop_toBottomOf="@id/draftTextView">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playersRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:paddingBottom="@dimen/_200sdp"
-            android:clipToPadding="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            tools:itemCount="2"
-            tools:listitem="@layout/player_main_card" />
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filtersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:clipToOutline="true"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/draftTextView"
+                tools:listitem="@layout/filter_item" />
+
+
+            <View
+                android:id="@+id/lineView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="#24973EFF"
+                android:clipToOutline="true"
+                app:layout_constraintTop_toBottomOf="@+id/filtersRecyclerView" />
+
+
+            <EditText
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@drawable/search_view_background"
+                android:clipToOutline="true"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="@dimen/_2sdp"
+                android:fontFamily="@font/madani_regular"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
+                android:padding="@dimen/_8sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/text_color"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/lineView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="true"
+
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:itemCount="2"
+                tools:listitem="@layout/player_main_card" />
+
+        </LinearLayout>
+
+
 
     </androidx.core.widget.NestedScrollView>
 
 
+
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:id="@+id/scrollView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginVertical="@dimen/_8sdp"-->
+<!--        android:paddingBottom="@dimen/_150sdp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/upNestedScrollView">-->
+
+
+
+<!--    </androidx.core.widget.NestedScrollView>-->
 
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_8sdp"
-        android:orientation="vertical"
         android:background="@drawable/bottom_background"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -160,67 +180,62 @@
             android:id="@+id/autofillTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Autofill"
-            android:fontFamily="@font/madani_regular"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
             android:layout_marginTop="@dimen/_32sdp"
+            android:background="@drawable/autofills_button_background"
+            android:fontFamily="@font/madani_regular"
+            android:gravity="center"
+            android:text="Autofill"
             android:textColor="@color/background_color"
-            android:background="@drawable/autofills_button_background"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/selectedPlayersRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/_72sdp"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/non_active_selected_item"
-            android:layout_marginTop="@dimen/_72sdp"/>
+            tools:listitem="@layout/non_active_selected_item" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/selectedPlayersRecyclerView"
-            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/_8sdp"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="@dimen/_6sdp"
-            android:layout_marginVertical="@dimen/_8sdp">
+            app:layout_constraintTop_toBottomOf="@+id/selectedPlayersRecyclerView">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/madani_regular"
+                android:gravity="center"
                 android:text="CANCEl"
-                android:gravity="center"
-                android:fontFamily="@font/madani_regular"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:textColor="@color/text_color_light"
-                android:background="@drawable/button_background"/>
+                android:textColor="@color/text_color_light" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="SAVE"
-                android:gravity="center"
-                android:fontFamily="@font/madani_regular"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:textColor="@color/white"
-                android:background="@drawable/button_background_light"/>
-
+                android:layout_weight="1"
+                android:background="@drawable/button_background_light"
+                android:fontFamily="@font/madani_regular"
+                android:gravity="center"
+                android:text="SAVE"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>
 
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
