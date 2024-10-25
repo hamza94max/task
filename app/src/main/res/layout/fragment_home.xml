@@ -124,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingBottom="@dimen/_200sdp"
+            android:clipToPadding="true"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             tools:itemCount="2"
@@ -186,7 +187,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:padding="@dimen/_6sdp"
-            android:layout_marginVertical="@dimen/_10sdp">
+            android:layout_marginVertical="@dimen/_8sdp">
 
             <TextView
                 android:layout_width="0dp"

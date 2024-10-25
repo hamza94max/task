@@ -7,13 +7,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.ImageLoader
-import coil.request.ImageRequest
 import com.bumptech.glide.Glide
 import com.hamza.task.R
 import com.hamza.task.databinding.PlayerMainCardBinding
 import com.hamza.task.domain.models.Player
-import com.hamza.task.ui.home.HomeFragment.Companion.currentPosition
+import com.hamza.task.ui.home.listener.OnPlayerSelected
 import com.hamza.task.utils.Ext.toReadableFormat
 
 class PlayersAdapter (

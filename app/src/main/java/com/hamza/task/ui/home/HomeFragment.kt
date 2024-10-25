@@ -16,6 +16,8 @@ import com.hamza.task.base.BaseFragment
 import com.hamza.task.databinding.FragmentHomeBinding
 import com.hamza.task.domain.models.Player
 import com.hamza.task.domain.models.Position
+import com.hamza.task.ui.home.listener.OnPlayerSelected
+import com.hamza.task.ui.home.listener.OnSelectedPlayerListener
 import com.hamza.task.utils.Constants.INIT_AVAILABLE_BUDGET
 import com.hamza.task.utils.Constants.PLAYERS_NUM
 import com.hamza.task.utils.Ext.toReadableFormat
@@ -23,7 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSelectedPlayerListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
+    OnSelectedPlayerListener {
 
     private val playersViewModel: PlayersViewModel by viewModels()
 
@@ -67,7 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         updateBudget("0")
         updatePlayersNum()
 
-        binding.bottomLinearLayout.setOnClickListener{
+        binding.homeFragment.setOnClickListener {
             isClicked = false
             itemClickedPosition = -1
             selectedPlayersAdapter.notifyDataSetChanged()
@@ -102,7 +105,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         // Span for the budget (dynamic part)
         val budgetStart = 0
         val budgetEnd = budget.length
-        spannable.setSpan(AbsoluteSizeSpan(16, true), budgetStart, budgetEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(
+            AbsoluteSizeSpan(16, true),
+            budgetStart,
+            budgetEnd,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         spannable.setSpan(
             ForegroundColorSpan(resources.getColor(R.color.yellow)),
             budgetStart,
@@ -111,14 +119,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         )
 
         // Span for the static value (static part)
-        val staticValueStart = budgetEnd + 3 // Adjust for " / " (2 characters + 1 for 0-based index)
+        val staticValueStart =
+            budgetEnd + 3 // Adjust for " / " (2 characters + 1 for 0-based index)
         val staticValueEnd = fullText.length
-        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValueStart, staticValueEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(ForegroundColorSpan(Color.WHITE), staticValueStart, staticValueEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(
+            AbsoluteSizeSpan(13, true),
+            staticValueStart,
+            staticValueEnd,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            ForegroundColorSpan(Color.WHITE),
+            staticValueStart,
+            staticValueEnd,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         binding.budgetTextView.text = spannable
     }
-
 
 
     private fun updatePlayersNum() {
@@ -130,10 +148,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         val spannable = SpannableString(fullText)
 
         spannable.setSpan(AbsoluteSizeSpan(16, true), 0, dynamicValue.length, 0)
-        spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.yellow)), 0, dynamicValue.length, 0)
+        spannable.setSpan(
+            ForegroundColorSpan(resources.getColor(R.color.yellow)),
+            0,
+            dynamicValue.length,
+            0
+        )
 
         spannable.setSpan(AbsoluteSizeSpan(13, true), staticValue.length, fullText.length, 0)
-        spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.text_color)), staticValue.length, fullText.length, 0)
+        spannable.setSpan(
+            ForegroundColorSpan(resources.getColor(R.color.text_color)),
+            staticValue.length,
+            fullText.length,
+            0
+        )
 
         binding.playersNumTextView.text = spannable
 
@@ -142,12 +170,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
     override fun onPlayerSelected(player: Player) {
         Log.d("hamzaHOME", "onPlayerSelected()")
-        try{
+        try {
             if (activePosition < 15) {
                 selectedPlayers[activePosition] = player
                 binding.selectedPlayersRecyclerView.smoothScrollToPosition(activePosition)
 
-                activePosition = selectedPlayers.indexOfFirst { it.name.isBlank()  }
+                activePosition = selectedPlayers.indexOfFirst { it.name.isBlank() }
                 currentPosition++
 
                 currentBudget += player.marketValue
@@ -157,33 +185,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
                 updatePlayersNum()
 
                 playersList.find { it.name == player.name }!!.selected = true
-                Log.d("hamzaPlayerss", "selected Players from array: ${playersList.filter { it.selected }.size}")
+                Log.d(
+                    "hamzaPlayerss",
+                    "selected Players from array: ${playersList.filter { it.selected }.size}"
+                )
 
                 selectedPlayersAdapter.differ.submitList(selectedPlayers.toList())
                 selectedPlayersAdapter.notifyDataSetChanged()
                 playersAdapter.notifyDataSetChanged()
 
-                if (currentPosition < 15){
+                if (currentPosition < 15) {
                     filterByPosition(selectedPlayers[currentPosition].position)
                 }
 
 
-
             } else if (activePosition == 15) {
                 showLongToast("You reached to the limit of the squad")
-            } 
-        } catch (e: IndexOutOfBoundsException){
+            }
+        } catch (e: IndexOutOfBoundsException) {
             Log.e("hamzaError", "onPlayerSelected error: $e")
             showLongToast("You reached to the limit of the squad")
         }
-       
 
 
     }
 
     private fun updateAutofillText(isDark: Boolean) {
         if (isDark)
-        binding.autofillTextView.setBackgroundResource(R.drawable.autofills_button_background_dark)
+            binding.autofillTextView.setBackgroundResource(R.drawable.autofills_button_background_dark)
         else binding.autofillTextView.setBackgroundResource(R.drawable.autofills_button_background)
     }
 

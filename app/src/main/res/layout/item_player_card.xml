@@ -11,8 +11,7 @@
         android:layout_width="165dp"
         android:layout_height="190dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
-        android:padding="@dimen/_2sdp">
+        android:layout_marginTop="4dp">
 
         <!-- Player image -->
         <ImageView

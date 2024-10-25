@@ -1,6 +1,5 @@
 package com.hamza.task.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -17,6 +16,7 @@ import com.hamza.task.databinding.NonActiveSelectedItemBinding
 import com.hamza.task.ui.home.HomeFragment.Companion.activePosition
 import com.hamza.task.ui.home.HomeFragment.Companion.isClicked
 import com.hamza.task.ui.home.HomeFragment.Companion.itemClickedPosition
+import com.hamza.task.ui.home.listener.OnSelectedPlayerListener
 import com.hamza.task.utils.Ext.toReadableFormat
 
 class SelectedPlayersAdapter(
