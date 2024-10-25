@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/player_img_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +31,7 @@
             android:id="@+id/teamImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:background="@drawable/team_background"
             android:src="@drawable/team_ex"
@@ -42,6 +44,7 @@
             android:layout_height="30dp"
             android:layout_margin="@dimen/_6sdp"
             android:src="@drawable/league_ex"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Main background of player card -->

@@ -35,6 +35,7 @@ class PlayersAdapter (
                     Glide
                         .with(itemView.context)
                         .load(nationality.flagUrl)
+                        .placeholder(R.drawable.brazil_flag)
                         .into(nationalityImageView)
 
                     Glide

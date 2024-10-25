@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,8 +19,8 @@ import com.hamza.task.utils.Constants.INIT_AVAILABLE_BUDGET
 import com.hamza.task.utils.Constants.PLAYERS_NUM
 import com.hamza.task.utils.Ext.toReadableFormat
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.TextStyle
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSelectedPlayerListener {
 
@@ -46,14 +45,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
             filters.addAll(players.map {
                 it.team.name
             })
-            filtersAdapter = FiltersAdapter() {
-//                if (it == 0){
-//                    playersAdapter.differ.submitList(players)
-//                } else {
-//                    playersAdapter.differ.submitList(players.filter {
-//                        it.team.name == filters[it]
-//            }
-            }
+            filtersAdapter = FiltersAdapter() {}
+
             binding.filtersRecyclerView.adapter = filtersAdapter
             filtersAdapter.differ.submitList(filters.distinct())
 
@@ -71,7 +64,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         initSelectedPlayersList()
 
         updateBudget("0")
-        updatePlayersNum(0)
+        updatePlayersNum()
+
+        binding.homeFragment.setOnClickListener{
+            isClicked = false
+            itemClickedPosition = -1
+            selectedPlayersAdapter.notifyDataSetChanged()
+            Log.i("hamzaH", "clicked on the home Fragment")
+        }
 
     }
 
@@ -114,7 +114,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
     }
 
 
-    private fun updatePlayersNum(playersNum: Int) {
+    private fun updatePlayersNum() {
         val dynamicValue = playersNum.toString()
         val staticValue = "$PLAYERS_NUM"
         val fullText = "$dynamicValue / $staticValue"
@@ -133,32 +133,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
 
 
     override fun onPlayerSelected(player: Player) {
-        if (activePosition < 15) {
-            selectedPlayers[activePosition] = player
+        try{
+            if (activePosition < 15) {
+                selectedPlayers[activePosition] = player
 
-            activePosition++
-            currentPosition++
+                activePosition = selectedPlayers.indexOfFirst { !it.selected  }
+                currentPosition++
 
-            currentBudget += player.marketValue
-            updateBudget(currentBudget.toReadableFormat())
+                currentBudget += player.marketValue
+                updateBudget(currentBudget.toReadableFormat())
 
-            updatePlayersNum(currentPosition)
+                playersNum++
+                updatePlayersNum()
 
-            playersList.find { it.name == player.name }!!.selected = true
-            Log.d("hamzaPlayerss", "selected Players from array: ${playersList.filter { it.selected }.size}")
+                playersList.find { it.name == player.name }!!.selected = true
+                Log.d("hamzaPlayerss", "selected Players from array: ${playersList.filter { it.selected }.size}")
 
-            selectedPlayersAdapter.differ.submitList(selectedPlayers.toList())
-            selectedPlayersAdapter.notifyDataSetChanged()
+                selectedPlayersAdapter.differ.submitList(selectedPlayers.toList())
+                selectedPlayersAdapter.notifyDataSetChanged()
+                playersAdapter.notifyDataSetChanged()
 
-            if (currentPosition != 15){
-                filterByPosition(selectedPlayers[currentPosition].position)
-            }
+                if (currentPosition < 15){
+                    filterByPosition(selectedPlayers[currentPosition].position)
+                }
 
 
 
-        } else {
+            } else if (activePosition == 15) {
+                showLongToast("You reached to the limit of the squad")
+            } 
+        } catch (e: IndexOutOfBoundsException){
+            Log.e("hamzaError", "onPlayerSelected error: $e")
             showLongToast("You reached to the limit of the squad")
         }
+       
 
 
     }
@@ -176,14 +184,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected, OnSe
         var itemClickedPosition = -1
         var isClicked = false
 
+        var playersNum = 0
 
     }
 
     override fun onSelectedPlayerClicked(position: Int) {
         itemClickedPosition = position
         isClicked = true
+        filterByPosition(selectedPlayers[position].position)
         selectedPlayersAdapter.notifyDataSetChanged()
 
+    }
+
+    override fun onDeletedPlayerClicked(index: Int, player: Player) {
+        playersList.find { it.name == player.name }!!.selected = false
+        selectedPlayers[index] = Player(position = player.position)
+
+        activePosition = index
+        filterByPosition(player.position)
+        selectedPlayersAdapter.notifyDataSetChanged()
+
+        currentBudget -= player.marketValue
+        updateBudget(currentBudget.toReadableFormat())
+        playersNum--
+        updatePlayersNum()
     }
 
 

@@ -6,8 +6,14 @@
     <color name="player_score_bg">#973EFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="orange">#FFB700</color>
     <color name="text_color">#917EA7</color>
     <color name="text_color_light">#BFB6EB</color>
     <color name="yellow">#FFB700</color>
+    <color name="green" >#31BD60</color>
+    <color name="overlay_color">#80000000</color>
+
+    <color name="dark_background">#B3000000</color> <!-- A semi-transparent black -->
+    <color name="default_background">#FFFFFF</color> <!-- Default white background -->
+
+
 </resources>

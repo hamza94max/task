@@ -67,8 +67,12 @@ class SelectedPlayersAdapter(
                         overlay.isVisible = itemClickedPosition != adapterPosition
                         closeImageView.isVisible = itemClickedPosition == adapterPosition
                     }
+
+                    if (adapterPosition == differ.currentList.size - 1){
+                        closeImageView.isVisible = true
+                    }
                     binding.closeImageView.setOnClickListener {
-                        Log.i("hamzaSS", "close image")
+                        onSelectedPlayerListener.onDeletedPlayerClicked(adapterPosition, differ.currentList[adapterPosition])
                     }
 
                 }
@@ -188,7 +192,7 @@ class SelectedPlayersAdapter(
     }
 
     // Find next available slot (first unselected item)
-    private fun findNextAvailableSlot(): Int {
+    fun findNextAvailableSlot(): Int {
         return differ.currentList.indexOfFirst { !it.selected }
     }
 
