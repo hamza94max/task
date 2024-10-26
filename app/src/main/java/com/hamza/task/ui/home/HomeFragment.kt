@@ -21,6 +21,7 @@ import com.hamza.task.ui.home.listener.OnSelectedPlayerListener
 import com.hamza.task.utils.Constants.INIT_AVAILABLE_BUDGET
 import com.hamza.task.utils.Constants.PLAYERS_NUM
 import com.hamza.task.utils.Ext.toReadableFormat
+import com.hamza.task.utils.Utils.formatSpannableText
 import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("DEPRECATION")
@@ -43,18 +44,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
         get() = FragmentHomeBinding::inflate
 
     override fun prepareView(savedInstanceState: Bundle?) {
+        setupObservers()
+        initSelectedPlayersList()
+        updateBudget("0")
+        updatePlayersNum()
+        binding.homeFragment.setOnClickListener {
+            isClicked = false
+            itemClickedPosition = -1
+            selectedPlayersAdapter.notifyDataSetChanged()
+            Log.i("hamzaH", "clicked on the home Fragment")
+        }
+    }
 
-        val filters = arrayListOf("All")
+    private fun setupObservers() {
+
         playersViewModel.players.observe(this) { players ->
-            filters.addAll(players.map {
-                it.team.name
-            })
-            filtersAdapter = FiltersAdapter() {}
-
-            binding.filtersRecyclerView.adapter = filtersAdapter
-            filtersAdapter.differ.submitList(filters.distinct())
+            setUpFiltersRecyclerView(players)
 
             Log.d("hamzaDATA", "$players")
+
             binding.playersRecyclerView.adapter = playersAdapter
             playersList = players.toMutableList()
             filterByPosition(selectedPlayers[currentPosition].position)
@@ -64,19 +72,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
         playersViewModel.error.observe(this) {
             showLongToast(it)
         }
+    }
 
-        initSelectedPlayersList()
+    private fun setUpFiltersRecyclerView(players: List<Player>) {
+        val filters = arrayListOf("All")
+        filters.addAll(players.map {
+            it.team.name
+        })
+        filtersAdapter = FiltersAdapter() {}
 
-        updateBudget("0")
-        updatePlayersNum()
-
-        binding.homeFragment.setOnClickListener {
-            isClicked = false
-            itemClickedPosition = -1
-            selectedPlayersAdapter.notifyDataSetChanged()
-            Log.i("hamzaH", "clicked on the home Fragment")
-        }
-
+        binding.filtersRecyclerView.adapter = filtersAdapter
+        filtersAdapter.differ.submitList(filters.distinct())
     }
 
     private fun initSelectedPlayersList() {
@@ -89,7 +95,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
         selectedPlayersAdapter.differ.submitList(selectedPlayers)
     }
 
-
     private fun filterByPosition(position: Position) {
         val filteredPlayers = playersList.filter { it.position == position }
         playersAdapter.differ.submitList(filteredPlayers)
@@ -97,76 +102,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
     }
 
     private fun updateBudget(budget: String) {
-        val staticValue = INIT_AVAILABLE_BUDGET.toDouble().toReadableFormat()
-        val fullText = "$budget / $staticValue"
-
-        val spannable = SpannableString(fullText)
-
-        // Span for the budget (dynamic part)
-        val budgetStart = 0
-        val budgetEnd = budget.length
-        spannable.setSpan(
-            AbsoluteSizeSpan(16, true),
-            budgetStart,
-            budgetEnd,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        val formattedBudgetText = formatSpannableText(
+            requireContext(),
+            budget,
+            INIT_AVAILABLE_BUDGET.toDouble().toReadableFormat(),
+            R.color.yellow, Color.WHITE
         )
-        spannable.setSpan(
-            ForegroundColorSpan(resources.getColor(R.color.yellow)),
-            budgetStart,
-            budgetEnd,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        // Span for the static value (static part)
-        val staticValueStart =
-            budgetEnd + 3 // Adjust for " / " (2 characters + 1 for 0-based index)
-        val staticValueEnd = fullText.length
-        spannable.setSpan(
-            AbsoluteSizeSpan(13, true),
-            staticValueStart,
-            staticValueEnd,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            ForegroundColorSpan(Color.WHITE),
-            staticValueStart,
-            staticValueEnd,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        binding.budgetTextView.text = spannable
+        binding.budgetTextView.text = formattedBudgetText
     }
-
 
     private fun updatePlayersNum() {
         if (playersNum == 15) updateAutofillText(true) else updateAutofillText(false)
-        val dynamicValue = playersNum.toString()
-        val staticValue = "$PLAYERS_NUM"
-        val fullText = "$dynamicValue / $staticValue"
 
-        val spannable = SpannableString(fullText)
-
-        spannable.setSpan(AbsoluteSizeSpan(16, true), 0, dynamicValue.length, 0)
-        spannable.setSpan(
-            ForegroundColorSpan(resources.getColor(R.color.yellow)),
-            0,
-            dynamicValue.length,
-            0
+        val formattedPlayersNumText = formatSpannableText(
+            requireContext(),
+            playersNum.toString(),
+            PLAYERS_NUM.toString(),
+            R.color.yellow, R.color.text_color
         )
-
-        spannable.setSpan(AbsoluteSizeSpan(13, true), staticValue.length, fullText.length, 0)
-        spannable.setSpan(
-            ForegroundColorSpan(resources.getColor(R.color.text_color)),
-            staticValue.length,
-            fullText.length,
-            0
-        )
-
-        binding.playersNumTextView.text = spannable
+        binding.playersNumTextView.text = formattedPlayersNumText
 
     }
-
 
     override fun onPlayerSelected(player: Player) {
         Log.d("hamzaHOME", "onPlayerSelected()")
@@ -256,6 +212,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), OnPlayerSelected,
         playersNum--
         updatePlayersNum()
     }
-
 
 }
